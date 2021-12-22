@@ -24,7 +24,11 @@ const App: React.VFC = () => {
         dispatch(logout);
       }
     });
-  }, []);
+
+    return () => {
+      unSub();
+    };
+  }, [dispatch]);
 
   return <div className="App"></div>;
 };
