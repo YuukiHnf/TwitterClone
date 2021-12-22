@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -20,7 +20,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import styles from "./Auth.module.css";
-import { signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 import { rejects } from "assert";
 
@@ -60,6 +64,35 @@ const useStyles = makeStyles((theme) => ({
 
 const Auth: React.VFC = () => {
   const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+
+  const signInEmail = async () => {
+    try {
+      const usrCredient = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("[Success] : ", usrCredient.user);
+    } catch (e: any) {
+      alert(`[MyAuthWithEmail] : ${e.message}`);
+    }
+  };
+
+  const signUpEmail = async () => {
+    try {
+      const usrCredient = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("[Success] : ", usrCredient.user);
+    } catch (e: any) {
+      alert(`[MyAuthWithEmail] : ${e.message}`);
+    }
+  };
 
   const signInGoogle = async () => {
     // await signInWithPopup(auth, provider).catch((err) =>
@@ -83,7 +116,7 @@ const Auth: React.VFC = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {isLogin ? "Login" : "Register"}
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
@@ -96,6 +129,10 @@ const Auth: React.VFC = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
             <TextField
               variant="outlined"
@@ -107,6 +144,10 @@ const Auth: React.VFC = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
             <Button
               type="submit"
@@ -115,8 +156,23 @@ const Auth: React.VFC = () => {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              {isLogin ? "Login" : "Register"}
             </Button>
+            <Grid container>
+              <Grid item xs>
+                <span className={styles.login_reset}>Forgot password?</span>
+              </Grid>
+              <Grid item xs>
+                <span
+                  className={styles.login_toggleMode}
+                  onClick={() => {
+                    setIsLogin(!isLogin);
+                  }}
+                >
+                  {isLogin ? "Create new account?" : "Back to Login"}
+                </span>
+              </Grid>
+            </Grid>
             <Button
               fullWidth
               variant="contained"
