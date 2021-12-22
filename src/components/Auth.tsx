@@ -20,6 +20,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import styles from "./Auth.module.css";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase/firebase";
+import { rejects } from "assert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +60,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Auth: React.VFC = () => {
   const classes = useStyles();
+
+  const signInGoogle = async () => {
+    // await signInWithPopup(auth, provider).catch((err) =>
+    //   alert(`[MyAuthWithGoogle] : ${err.message}`)
+    // );
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+    } catch (e: any) {
+      alert(`[MyAuthWithGoogleError] : ${e.message}`);
+    }
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -101,6 +116,15 @@ const Auth: React.VFC = () => {
               className={classes.submit}
             >
               Sign In
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={signInGoogle}
+            >
+              Sign In With Google
             </Button>
           </form>
         </div>
