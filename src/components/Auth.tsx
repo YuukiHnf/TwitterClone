@@ -94,6 +94,12 @@ const Auth: React.VFC = () => {
     }
   };
 
+  const onClickLoginOrRegister: React.MouseEventHandler<HTMLButtonElement> = (
+    e
+  ) => {
+    isLogin ? signInEmail() : signUpEmail();
+  };
+
   const signInGoogle = async () => {
     // await signInWithPopup(auth, provider).catch((err) =>
     //   alert(`[MyAuthWithGoogle] : ${err.message}`)
@@ -150,11 +156,12 @@ const Auth: React.VFC = () => {
               }}
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              startIcon={<EmailIcon />}
+              onClick={onClickLoginOrRegister}
             >
               {isLogin ? "Login" : "Register"}
             </Button>
