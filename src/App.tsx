@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import styples from "./App.module.css";
 
 const App: React.VFC = () => {
   return <div className="App"></div>;
