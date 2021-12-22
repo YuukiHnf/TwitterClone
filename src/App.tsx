@@ -1,8 +1,10 @@
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect } from "react";
-import styples from "./App.module.css";
+import styles from "./App.module.css";
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
+import Auth from "./components/Auth";
+import Feed from "./components/Feed";
 import { login, logout } from "./features/userSlice";
 import { auth } from "./firebase/firebase";
 
@@ -30,7 +32,18 @@ const App: React.VFC = () => {
     };
   }, [dispatch]);
 
-  return <div className="App"></div>;
+  return (
+    <>
+      {user.uid ? (
+        <div className={styles.app}>
+          {" "}
+          <Feed />{" "}
+        </div>
+      ) : (
+        <Auth />
+      )}
+    </>
+  );
 };
 
 export default App;
