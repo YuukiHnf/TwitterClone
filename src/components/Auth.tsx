@@ -68,6 +68,16 @@ const Auth: React.VFC = () => {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
+  const [userName, setUserName] = useState("");
+  const [avaterImage, setAvaterImage] = useState<File | null>(null);
+
+  const onChangeImageHanlder = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0]) {
+      setAvaterImage(e.target.files![0]);
+      e.target.value = "";
+    }
+  };
+
   const signInEmail = async () => {
     try {
       const usrCredient = await signInWithEmailAndPassword(
@@ -169,7 +179,7 @@ const Auth: React.VFC = () => {
               <Grid item xs>
                 <span className={styles.login_reset}>Forgot password?</span>
               </Grid>
-              <Grid item xs>
+              <Grid item>
                 <span
                   className={styles.login_toggleMode}
                   onClick={() => {
