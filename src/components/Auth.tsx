@@ -239,6 +239,11 @@ const Auth: React.VFC = () => {
               }}
             />
             <Button
+              disabled={
+                isLogin
+                  ? !email || password.length < 6
+                  : !userName || !email || password.length < 6
+              }
               fullWidth
               variant="contained"
               color="primary"
