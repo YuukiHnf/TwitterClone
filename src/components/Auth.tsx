@@ -313,6 +313,7 @@ const Auth: React.VFC = () => {
               color="primary"
               className={classes.submit}
               onClick={signInGoogle}
+              startIcon={<CameraIcon />}
             >
               Sign In With Google
             </Button>
