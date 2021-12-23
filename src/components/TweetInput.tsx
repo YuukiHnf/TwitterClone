@@ -29,7 +29,7 @@ type TweetType = {
   username: string;
 };
 
-const TweetInput = () => {
+const TweetInput: React.VFC = () => {
   //   const user = useAppSelector((state) => state.user.user);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();

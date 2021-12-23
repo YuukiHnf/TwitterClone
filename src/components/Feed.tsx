@@ -6,7 +6,7 @@ import { auth } from "../firebase/firebase";
 import TweetInput from "./TweetInput";
 import styles from "./Feed.module.css";
 
-const Feed = () => {
+const Feed: React.VFC = () => {
   const dispatch = useAppDispatch();
 
   const onSignOut = async () => {
