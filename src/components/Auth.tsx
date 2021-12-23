@@ -24,9 +24,13 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
-import { auth, provider } from "../firebase/firebase";
+import { auth, provider, storage } from "../firebase/firebase";
 import { rejects } from "assert";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useAppDispatch } from "../app/hooks";
+import { updateUserProfile } from "../features/userSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,11 +73,12 @@ const Auth: React.VFC = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   const [userName, setUserName] = useState("");
-  const [avaterImage, setAvaterImage] = useState<File | null>(null);
+  const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const dispatch = useAppDispatch();
 
   const onChangeImageHanlder = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
-      setAvaterImage(e.target.files![0]);
+      setAvatarImage(e.target.files![0]);
       e.target.value = "";
     }
   };
@@ -98,7 +103,37 @@ const Auth: React.VFC = () => {
         email,
         password
       );
-      console.log("[Success] : ", usrCredient.user);
+      let url = ""; //image URL
+      if (avatarImage) {
+        var fileName =
+          Math.random().toString(36).slice(-16) + "_" + avatarImage.name;
+        //crate reference
+        const storageRef = ref(storage, `avatar/${fileName}`);
+        // upload image
+        await uploadBytes(storageRef, avatarImage);
+        // urlを取得する
+        url = await getDownloadURL(storageRef);
+        console.log("[Success] : Upload Image : ", url);
+      }
+      // user情報をUploadする
+      await updateProfile(usrCredient.user, {
+        displayName: userName,
+        photoURL: url,
+      })
+        .then(() => {
+          console.log("[Success] : updateProfile");
+        })
+        .catch(() => {
+          console.log("[MyError] : updateProfile");
+        });
+      //stateに情報を更新する
+      dispatch(
+        updateUserProfile({
+          displayName: userName,
+          photoUrl: url,
+        })
+      );
+      console.log("[Fin User] : ", usrCredient.user);
     } catch (e: any) {
       alert(`[MyAuthWithEmail] : ${e.message}`);
     }
