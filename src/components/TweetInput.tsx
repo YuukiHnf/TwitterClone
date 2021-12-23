@@ -1,4 +1,4 @@
-import { Avatar } from "@material-ui/core";
+import { Avatar, Button, IconButton } from "@material-ui/core";
 import { signOut } from "firebase/auth";
 import {
   addDoc,
@@ -14,6 +14,8 @@ import {
   UploadTask,
 } from "firebase/storage";
 import React, { useState } from "react";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, selectUser } from "../features/userSlice";
 import { auth, db, storage } from "../firebase/firebase";
@@ -94,16 +96,53 @@ const TweetInput = () => {
   };
 
   return (
-    <div>
-      <Avatar
-        className={styles.tweet_avatar}
-        src={user.photoUrl}
-        onClick={async () => {
-          await signOut(auth);
-          dispatch(logout({}));
-        }}
-      />
-    </div>
+    <>
+      <form onSubmit={sendTweet}>
+        <div className={styles.tweet_form}>
+          <Avatar
+            className={styles.tweet_avatar}
+            src={user.photoUrl}
+            onClick={async () => {
+              await signOut(auth);
+              dispatch(logout({}));
+            }}
+          />
+          <input
+            className={styles.tweet_input}
+            placeholder="Let's tweet"
+            type="text"
+            autoFocus
+            value={tweetMsg}
+            onChange={(e) => {
+              setTweetMsg(e.target.value);
+            }}
+          />
+          <IconButton>
+            <label>
+              <AddAPhotoIcon
+                className={
+                  tweetImage ? styles.tweet_addIconLoaded : styles.tweet_addIcon
+                }
+              />
+              <input
+                className={styles.tweet_hiddenIcon}
+                type="file"
+                onChange={onChangeImageHandler}
+              />
+            </label>
+          </IconButton>
+        </div>
+        <Button
+          type="submit"
+          disabled={!tweetMsg}
+          className={
+            tweetMsg ? styles.tweet_sendBtn : styles.tweet_sendDisableBtn
+          }
+        >
+          Tweet
+        </Button>
+      </form>
+    </>
   );
 };
 

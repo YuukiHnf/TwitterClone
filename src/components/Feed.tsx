@@ -4,6 +4,7 @@ import { useAppDispatch } from "../app/hooks";
 import { logout } from "../features/userSlice";
 import { auth } from "../firebase/firebase";
 import TweetInput from "./TweetInput";
+import styles from "./Feed.module.css";
 
 const Feed = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ const Feed = () => {
   };
 
   return (
-    <div>
+    <div className={styles.feed}>
       Feed
       <TweetInput />
       <button onClick={onSignOut}>SignOut</button>
