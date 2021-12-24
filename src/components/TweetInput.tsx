@@ -21,15 +21,16 @@ import { logout, selectUser } from "../features/userSlice";
 import { auth, db, storage } from "../firebase/firebase";
 import styles from "./TweetInput.module.css";
 
-type TweetType = {
-  avater: string;
+export type TweetType = {
+  id: string;
+  avatar: string;
   image: string;
   text: string;
   timestamp: FieldValue;
   username: string;
 };
 
-const TweetInput = () => {
+const TweetInput: React.VFC = () => {
   //   const user = useAppSelector((state) => state.user.user);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
