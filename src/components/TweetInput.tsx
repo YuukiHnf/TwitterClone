@@ -5,6 +5,7 @@ import {
   collection,
   FieldValue,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -26,7 +27,7 @@ export type TweetType = {
   avatar: string;
   image: string;
   text: string;
-  timestamp: FieldValue;
+  timestamp: Timestamp;
   username: string;
 };
 
