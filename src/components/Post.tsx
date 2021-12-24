@@ -1,15 +1,32 @@
 import { Avatar } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../app/hooks";
 import { selectUser } from "../features/userSlice";
 import { TweetType } from "./TweetInput";
 import styles from "./Post.module.css";
 import SendIcon from "@material-ui/icons/Send";
-import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 type PostType = {
   post: TweetType;
+};
+
+type ReplayType = {
+  id: string;
+  avatar: string;
+  text: string;
+  timeStamp: Timestamp;
+  username: string;
 };
 
 const Post: React.VFC<PostType> = (props: PostType) => {
@@ -17,6 +34,36 @@ const Post: React.VFC<PostType> = (props: PostType) => {
   const user = useAppSelector(selectUser);
 
   const [comment, setComment] = useState("");
+  const [replays, setReplays] = useState<Array<ReplayType>>([]);
+
+  useEffect(() => {
+    // この投稿のreplayのCollection
+    const replayCollection = collection(
+      doc(collection(db, "posts"), post.id),
+      "comments"
+    );
+    // それらのquery
+    const q = query(replayCollection, orderBy("timeStamp", "asc"));
+    // replay stateに情報を入れる
+    const unSub = onSnapshot(q, (snapshot) => {
+      setReplays(
+        snapshot.docs.map((snap) => ({
+          id: snap.id,
+          avatar: snap.data().avatar,
+          text: snap.data().text,
+          timeStamp: snap.data().timeStamp,
+          username: snap.data().username,
+        }))
+      );
+    });
+
+    return () => {
+      unSub();
+    };
+  }, [post.id]);
+
+  console.log(`${post.text} : reps are ${replays}`);
+
   const onNewComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // この投稿のDocをとってくる
