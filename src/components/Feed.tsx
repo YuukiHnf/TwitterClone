@@ -31,10 +31,10 @@ const Feed: React.VFC = () => {
       setPosts(
         snapshot.docs.map((doc) => ({
           avatar: doc.data().avatar,
-          id: doc.data().id,
+          id: doc.id,
           image: doc.data().image,
           text: doc.data().text,
-          timestamp: doc.data().timestamp,
+          timestamp: doc.data().timeStamp,
           username: doc.data().username,
         }))
       );
