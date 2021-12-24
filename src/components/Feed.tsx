@@ -5,15 +5,7 @@ import { logout } from "../features/userSlice";
 import { auth, db } from "../firebase/firebase";
 import TweetInput, { TweetType } from "./TweetInput";
 import styles from "./Feed.module.css";
-import {
-  collection,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  Timestamp,
-  Unsubscribe,
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { Avatar } from "@material-ui/core";
 
 const Feed: React.VFC = () => {
