@@ -7,6 +7,7 @@ import TweetInput, { TweetType } from "./TweetInput";
 import styles from "./Feed.module.css";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { Avatar } from "@material-ui/core";
+import Post from "./Post";
 
 const Feed: React.VFC = () => {
   // TweetTypeを拡張したい
@@ -52,6 +53,9 @@ const Feed: React.VFC = () => {
   return (
     <div className={styles.feed}>
       <TweetInput />
+      {posts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
     </div>
   );
 };
