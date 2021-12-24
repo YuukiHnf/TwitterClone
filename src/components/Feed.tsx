@@ -53,9 +53,7 @@ const Feed: React.VFC = () => {
   return (
     <div className={styles.feed}>
       <TweetInput />
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {posts[0]?.id && posts.map((post) => <Post key={post.id} post={post} />)}
     </div>
   );
 };
