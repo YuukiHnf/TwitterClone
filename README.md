@@ -12,8 +12,9 @@
 -  React 
 -  Redux-toolkit
 
-
-React, Redux, Firebase などのお勉強として作成
+# 備考
+- React, Redux, Firebase などのお勉強として作成
+- Firebaseによるclient主義での開発を行った
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
