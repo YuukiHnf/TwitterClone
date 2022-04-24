@@ -1,4 +1,17 @@
-## Twitter Clone App
+## 学習開発物
+
+2021/12/07開発
+- twitterのcloneアプリ
+- https://twitter-cloneapp-2c188.web.app/
+- できること
+-   ・認証 with google, email by firebase.auth
+-   tweetのCRUD by firebase.firestore
+
+# 構成
+-  firebase.firestore
+-  React 
+-  Redux-toolkit
+
 
 React, Redux, Firebase などのお勉強として作成
 
